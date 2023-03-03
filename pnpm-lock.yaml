@@ -1,0 +1,13 @@
+lockfileVersion: 5.4
+
+specifiers:
+  '@types/swagger-ui': ^3.52.0
+
+devDependencies:
+  '@types/swagger-ui': 3.52.0
+
+packages:
+
+  /@types/swagger-ui/3.52.0:
+    resolution: {integrity: sha512-SlufixEmh+8CLHNgTfAfCT1icNOF7bXboWabhHr1+hIolqlvfwYJGe7HgRcpI3ChE7HWASmEKLkMu34rxseJjQ==}
+    dev: true
