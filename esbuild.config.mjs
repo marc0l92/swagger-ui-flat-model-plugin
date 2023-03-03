@@ -1,5 +1,6 @@
 import esbuild from 'esbuild'
 import process from 'process'
+import { NodeModulesPolyfillPlugin } from '@esbuild-plugins/node-modules-polyfill'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 
@@ -12,7 +13,7 @@ const webOptions = {
         js: '// Project: https://github.com/marc0l92/swagger-ui-flat-model-plugin',
     },
     entryPoints: [
-        './src/swaggerUiFlatModelPlugin.ts',
+        './src/swaggerUiFlatModelPlugin.tsx',
     ],
     bundle: true,
     mainFields: ["browser", "module", "main"],
@@ -29,6 +30,9 @@ const webOptions = {
         'edge18',
         'firefox57',
         'safari11',
+    ],
+    plugins: [
+        NodeModulesPolyfillPlugin(),
     ],
 }
 
