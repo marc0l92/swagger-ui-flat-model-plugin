@@ -1,0 +1,15 @@
+.swagger-ui .tab li:not(:last-child)::after {
+    background: rgba(0,0,0,.2);
+    content: "";
+    height: 100%;
+    position: absolute;
+    right: 6px;
+    top: 0;
+    width: 1px;
+}
+
+.swagger-ui .tab li:not(:last-child) {
+    padding-left: 0;
+    padding-right: 12px;
+    position: relative;
+}
