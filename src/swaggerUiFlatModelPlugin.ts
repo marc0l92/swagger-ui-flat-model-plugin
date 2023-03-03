@@ -1,6 +1,8 @@
-import type { SwaggerUIPlugin } from "swagger-ui";
+import * as React from 'react'
+import type { SwaggerUIPlugin } from "swagger-ui"
 
-export const modelFlatPlugin: SwaggerUIPlugin = (system: any) => {
+const swaggerUiFlatModelPlugin: SwaggerUIPlugin = (system: any) => {
+  console.log('ciao')
   console.log(system)
 
   return {
@@ -21,11 +23,13 @@ export const modelFlatPlugin: SwaggerUIPlugin = (system: any) => {
     // components: {
     //   info: () => null
     // },
-    wrapComponents: {
-      modelExample: (Original, system) => (props) => {
-        console.log({ Original, system, props })
-        return new Original(props)
-      },
-    },
+    // wrapComponents: {
+    //   modelExample: (Original, system) => (props) => {
+    //     console.log({ Original, system, props })
+    //     return new Original(props)
+    //   },
+    // },
   }
 }
+
+window['swaggerUiFlatModelPlugin'] = swaggerUiFlatModelPlugin
