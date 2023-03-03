@@ -59,7 +59,7 @@ export default class ModelExample extends React.Component {
     let { getComponent, specSelectors, schema, example, isExecute, getConfigs, specPath, includeReadOnly, includeWriteOnly } = this.props
     let { defaultModelExpandDepth } = getConfigs()
     const ModelWrapper = getComponent("ModelWrapper")
-    const ModelFlat = getComponent("ModelFlat")
+    const ModelFlatWrapper = getComponent("ModelFlatWrapper")
     const HighlightCode = getComponent("highlightCode")
     const exampleTabId = randomBytes(5).toString("base64")
     const examplePanelId = randomBytes(5).toString("base64")
@@ -163,7 +163,7 @@ export default class ModelExample extends React.Component {
             role="tabpanel"
             tabIndex="0"
           >
-            <ModelFlat
+            <ModelFlatWrapper
               schema={schema}
               getComponent={getComponent}
               specSelectors={specSelectors}

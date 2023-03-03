@@ -1,12 +1,12 @@
 import type { SwaggerUIPlugin } from "swagger-ui"
 import ModelExample from './modelExample'
-import ModelFlat from './modelFlat'
+import ModelFlatWrapper from './modelFlatWrapper'
 
 const swaggerUiFlatModelPlugin: SwaggerUIPlugin = (system: any) => {
   return {
     components: {
       modelExample: ModelExample,
-      ModelFlat: ModelFlat,
+      ModelFlatWrapper: ModelFlatWrapper,
     }
   }
 }
