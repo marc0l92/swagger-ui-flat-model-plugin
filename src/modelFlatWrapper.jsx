@@ -10,7 +10,6 @@ export default class ModelFlatWrapper extends ImmutablePureComponent {
     getComponent: PropTypes.func.isRequired,
     specSelectors: PropTypes.object.isRequired,
     name: PropTypes.string,
-    displayName: PropTypes.string,
     required: PropTypes.bool,
     includeReadOnly: PropTypes.bool,
     includeWriteOnly: PropTypes.bool,
@@ -36,11 +35,13 @@ export default class ModelFlatWrapper extends ImmutablePureComponent {
     const type = (schema && schema.get("type")) || 'object'
     const properties = schema.get("properties")
     const requiredProperties = schema.get("required")
+    if (!name) {
+      name = 'Object'
+    }
 
 
     return <div>
-      <p>type: {type}</p>
-      <p>properties: </p>
+      <div>{name} {'{'} </div>
       {!(properties && properties.size) ? null : properties.entrySeq().map(
         ([key, value]) => {
           let isRequired = List.isList(requiredProperties) && requiredProperties.contains(key)
@@ -51,12 +52,11 @@ export default class ModelFlatWrapper extends ImmutablePureComponent {
             classNames.push("required")
           }
 
-          return (<tr key={key} className={classNames.join(" ")}>
-            <td>
-              {key}{isRequired && <span className="star">*</span>}
-            </td>
-          </tr>)
+          return (<div key={key} className={classNames.join(" ")}>
+            {key}{isRequired && <span className="star">*</span>}
+          </div>)
         }).toArray()}
+        <div>{'}'} </div>
     </div>
   }
 }
