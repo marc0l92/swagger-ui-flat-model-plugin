@@ -5,18 +5,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Swagger UI Flat Model Plugin</title>
-    <link rel="stylesheet" href="./swagger-ui.css" />
-    <link rel="stylesheet" href="../dist/swaggerUiFlatModelPlugin.css" />
+    <link rel="stylesheet" href="./css/swagger-ui.css" />
+    <link rel="stylesheet" href="./css/swaggerUiFlatModelPlugin.css" />
 </head>
 
 <body>
     <div id="swagger-ui"></div>
-    <script src="./swagger-ui-bundle.js" crossorigin></script>
-    <script src="../dist/swaggerUiFlatModelPlugin.js"></script>
+    <script src="./js/swagger-ui-bundle.js" crossorigin></script>
+    <script src="./js/swaggerUiFlatModelPlugin.js"></script>
     <script>
         window.onload = () => {
             window.ui = SwaggerUIBundle({
-                url: './openapi.json',
+                url: './data/openapi.json',
                 dom_id: '#swagger-ui',
                 plugins: [swaggerUiFlatModelPlugin],
             });

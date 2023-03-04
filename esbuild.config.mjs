@@ -14,7 +14,14 @@ const webOptions = {
         js: '// Project: https://github.com/marc0l92/swagger-ui-flat-model-plugin',
     },
     entryPoints: [
-        './src/swaggerUiFlatModelPlugin.tsx',
+        {
+            in: './src/swaggerUiFlatModelPlugin.tsx',
+            out: './dist/swaggerUiFlatModelPlugin'
+        },
+        {
+            in: './src/swaggerUiFlatModelPlugin.tsx',
+            out: './test/js/swaggerUiFlatModelPlugin'
+        },
     ],
     bundle: true,
     mainFields: ["browser", "module", "main"],
@@ -22,10 +29,10 @@ const webOptions = {
     logLevel: 'info',
     sourcemap: prod ? false : 'inline',
     treeShaking: true,
-    outdir: './dist',
+    outdir: '.',
     minify: prod,
     platform: 'browser',
-    splitting: true,
+    splitting: false,
     target: [
         'chrome58',
         'edge18',
@@ -37,9 +44,10 @@ const webOptions = {
     ],
 }
 
-fs.copyFileSync('./node_modules/swagger-ui-dist/swagger-ui.css', './test/swagger-ui.css')
-fs.copyFileSync('./node_modules/swagger-ui-dist/swagger-ui.css.map', './test/swagger-ui.css.map')
-fs.copyFileSync('./node_modules/swagger-ui-dist/swagger-ui-bundle.js', './test/swagger-ui-bundle.js')
+fs.copyFileSync('./dist/swaggerUiFlatModelPlugin.css', './test/css/swaggerUiFlatModelPlugin.css')
+fs.copyFileSync('./node_modules/swagger-ui-dist/swagger-ui.css', './test/css/swagger-ui.css')
+fs.copyFileSync('./node_modules/swagger-ui-dist/swagger-ui.css.map', './test/css/swagger-ui.css.map')
+fs.copyFileSync('./node_modules/swagger-ui-dist/swagger-ui-bundle.js', './test/js/swagger-ui-bundle.js')
 
 if (prod) {
     esbuild.build(webOptions).catch(() => process.exit(1))
