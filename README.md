@@ -8,4 +8,28 @@ Plugin for [swagger-ui](https://github.com/swagger-api/swagger-ui) to add an add
 
 ## How to install it
 
-TODO
+- Download the files in the `dist` folder:
+
+```
+dist/swaggerUiFlatModelPlugin.css
+dist/swaggerUiFlatModelPlugin.js
+```
+
+- Include them in your website:
+
+```html
+<link rel="stylesheet" href="./css/swaggerUiFlatModelPlugin.css" />
+<script src="./js/swaggerUiFlatModelPlugin.js"></script>
+```
+
+- Initialize the swagger ui using this plugin
+
+```js
+SwaggerUIBundle({
+    url: './data/openapi.json',
+    dom_id: '#swagger-ui',
+    plugins: [swaggerUiFlatModelPlugin],
+});
+```
+
+See the [example in the test folder](https://github.com/marc0l92/swagger-ui-flat-model-plugin/blob/master/test/index.html) for more details.
