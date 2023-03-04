@@ -3,6 +3,7 @@ import process from 'process'
 import { NodeModulesPolyfillPlugin } from '@esbuild-plugins/node-modules-polyfill'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
+import fs from 'fs'
 
 const argv = yargs(hideBin(process.argv)).argv
 const prod = argv._.indexOf('production') >= 0
@@ -35,6 +36,10 @@ const webOptions = {
         NodeModulesPolyfillPlugin(),
     ],
 }
+
+fs.copyFileSync('./node_modules/swagger-ui-dist/swagger-ui.css', './test/swagger-ui.css')
+fs.copyFileSync('./node_modules/swagger-ui-dist/swagger-ui.css.map', './test/swagger-ui.css.map')
+fs.copyFileSync('./node_modules/swagger-ui-dist/swagger-ui-bundle.js', './test/swagger-ui-bundle.js')
 
 if (prod) {
     esbuild.build(webOptions).catch(() => process.exit(1))
