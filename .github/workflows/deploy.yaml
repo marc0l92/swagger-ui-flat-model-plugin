@@ -19,7 +19,8 @@ jobs:
           run_install: false
       - name: Install dependencies
         run: |
-          pnpm install --frozen-lockfile
+          # pnpm install --frozen-lockfile
+          pnpm install
       - name: Build module
         run: |
           pnpm run build

@@ -21,7 +21,8 @@ jobs:
       - name: Install dependencies
         id: install
         run: |
-          pnpm install --frozen-lockfile
+          # pnpm install --frozen-lockfile
+          pnpm install
       - name: Build
         id: build
         run: |

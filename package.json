@@ -15,7 +15,7 @@
     "API"
   ],
   "author": "marc0l92",
-  "license": "AGPL3",
+  "license": "AGPL-3.0",
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
