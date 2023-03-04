@@ -1100,6 +1100,7 @@
                 }
             },
             "Pet": {
+                "description": "An animal to buy",
                 "required": [
                     "name",
                     "photoUrls"
