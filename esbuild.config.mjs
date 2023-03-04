@@ -48,6 +48,7 @@ fs.copyFileSync('./dist/swaggerUiFlatModelPlugin.css', './test/css/swaggerUiFlat
 fs.copyFileSync('./node_modules/swagger-ui-dist/swagger-ui.css', './test/css/swagger-ui.css')
 fs.copyFileSync('./node_modules/swagger-ui-dist/swagger-ui.css.map', './test/css/swagger-ui.css.map')
 fs.copyFileSync('./node_modules/swagger-ui-dist/swagger-ui-bundle.js', './test/js/swagger-ui-bundle.js')
+fs.copyFileSync('./node_modules/swagger-ui-dist/swagger-ui-bundle.js', './test/js/swagger-ui-bundle.js.map')
 
 if (prod) {
     esbuild.build(webOptions).catch(() => process.exit(1))
