@@ -13,9 +13,19 @@ export default class ModelFlatProperty extends ImmutablePureComponent {
     }
 
     render() {
-        const { name } = this.props
-        return <div>
-            <span>{name}</span>
-        </div>
+        const { schema, getComponent, specSelectors, name, required } = this.props
+        const { isOAS3 } = specSelectors
+        let isDeprecated = isOAS3() && schema.get("deprecated")
+        let classNames = ["property-row"]
+        if (isDeprecated) {
+            classNames.push("deprecated")
+        }
+        if (required) {
+            classNames.push("required")
+        }
+        return <tr className={classNames.join(" ")}>
+            <td>{name}{required && <span className="star">*</span>}</td>
+            <td>here</td>
+        </tr>
     }
 }

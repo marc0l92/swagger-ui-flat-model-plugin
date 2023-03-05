@@ -166,6 +166,7 @@ export default class ModelExample extends React.Component {
             <ModelFlatWrapper
               schema={schema}
               getComponent={getComponent}
+              getConfigs={getConfigs}
               specSelectors={specSelectors}
               includeReadOnly={includeReadOnly}
               includeWriteOnly={includeWriteOnly}

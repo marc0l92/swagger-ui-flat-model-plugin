@@ -7,6 +7,7 @@ export default class ModelFlatWrapper extends ImmutablePureComponent {
   static propTypes = {
     schema: ImPropTypes.map.isRequired,
     getComponent: PropTypes.func.isRequired,
+    getConfigs: PropTypes.func.isRequired,
     specSelectors: PropTypes.object.isRequired,
     includeReadOnly: PropTypes.bool,
     includeWriteOnly: PropTypes.bool,
@@ -53,7 +54,7 @@ export default class ModelFlatWrapper extends ImmutablePureComponent {
             })
         }
         if (additionalProperties) {
-          this.getAllModels('<*>', additionalProperties, options, models)
+          this.getAllModels('<*>', additionalProperties, options, models) // TODO: there should be no models with <*> name
         }
       } else if (type === 'array' && schema.has('items')) {
         this.getAllModels(name, schema.get('items'), options, models)
@@ -63,18 +64,19 @@ export default class ModelFlatWrapper extends ImmutablePureComponent {
   }
 
   render() {
-    let { schema, getComponent, specSelectors, includeReadOnly, includeWriteOnly } = this.props
+    let { schema, getComponent, getConfigs, specSelectors, includeReadOnly, includeWriteOnly } = this.props
     const ModelFlat = getComponent('ModelFlat')
 
     const models = this.getAllModels(null, schema, { includeReadOnly, includeWriteOnly })
 
-    return <div className="model-box">
+    return <div className="model-box schema-flat">
       {Object.entries(models).map(([key, value]) => {
         return <ModelFlat
           key={key}
           name={key}
           schema={value}
           getComponent={getComponent}
+          getConfigs={getConfigs}
           specSelectors={specSelectors}
           includeReadOnly={includeReadOnly}
           includeWriteOnly={includeWriteOnly} />
