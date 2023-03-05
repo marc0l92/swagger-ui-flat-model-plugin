@@ -9,28 +9,21 @@ const argv = yargs(hideBin(process.argv)).argv
 const prod = argv._.indexOf('production') >= 0
 
 /** @type {esbuild.BuildOptions} */
-const webOptions = {
+const distOptions = {
     banner: {
         js: '// Project: https://github.com/marc0l92/swagger-ui-flat-model-plugin',
     },
     entryPoints: [
-        {
-            in: './src/swaggerUiFlatModelPlugin.tsx',
-            out: './dist/swaggerUiFlatModelPlugin'
-        },
-        {
-            in: './src/swaggerUiFlatModelPlugin.tsx',
-            out: './test/js/swaggerUiFlatModelPlugin'
-        },
+        './src/swaggerUiFlatModelPlugin.tsx',
     ],
     bundle: true,
     mainFields: ["browser", "module", "main"],
     format: 'esm',
     logLevel: 'info',
-    sourcemap: prod ? false : 'inline',
+    sourcemap: false,
     treeShaking: true,
-    outdir: '.',
-    minify: prod,
+    outdir: './dist',
+    minify: true,
     platform: 'browser',
     splitting: false,
     target: [
@@ -44,6 +37,13 @@ const webOptions = {
     ],
 }
 
+/** @type {esbuild.BuildOptions} */
+const testOptions = Object.assign({}, distOptions, {
+    sourcemap: 'inline',
+    outdir: './test',
+    minify: false,
+})
+
 fs.copyFileSync('./dist/swaggerUiFlatModelPlugin.css', './test/css/swaggerUiFlatModelPlugin.css')
 fs.copyFileSync('./node_modules/swagger-ui-dist/swagger-ui.css', './test/css/swagger-ui.css')
 fs.copyFileSync('./node_modules/swagger-ui-dist/swagger-ui.css.map', './test/css/swagger-ui.css.map')
@@ -51,8 +51,11 @@ fs.copyFileSync('./node_modules/swagger-ui-dist/swagger-ui-bundle.js', './test/j
 fs.copyFileSync('./node_modules/swagger-ui-dist/swagger-ui-bundle.js', './test/js/swagger-ui-bundle.js.map')
 
 if (prod) {
-    esbuild.build(webOptions).catch(() => process.exit(1))
+    esbuild.build(testOptions).catch(() => process.exit(1))
+    esbuild.build(distOptions).catch(() => process.exit(1))
 } else {
-    const webCtx = await esbuild.context(webOptions)
+    const webCtxTest = await esbuild.context(testOptions)
+    webCtxTest.watch().catch(() => process.exit(1))
+    const webCtx = await esbuild.context(distOptions)
     webCtx.watch().catch(() => process.exit(1))
 }
