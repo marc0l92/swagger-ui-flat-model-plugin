@@ -1,58 +1,79 @@
-import React from "react"
-import ImmutablePureComponent from "react-immutable-pure-component"
-import ImPropTypes from "react-immutable-proptypes"
+import React, { Component } from "react"
 import PropTypes from "prop-types"
+import { getExtensions, sanitizeUrl } from "./utils"
 
-export default class ModelFlatProperty extends ImmutablePureComponent {
+const propClass = "property primitive"
+
+export default class Primitive extends Component {
     static propTypes = {
-        schema: ImPropTypes.map.isRequired,
+        schema: PropTypes.object.isRequired,
         getComponent: PropTypes.func.isRequired,
-        specSelectors: PropTypes.object.isRequired,
+        getConfigs: PropTypes.func.isRequired,
         name: PropTypes.string,
-        required: PropTypes.bool,
+        displayName: PropTypes.string,
+        depth: PropTypes.number,
+        expandDepth: PropTypes.number
     }
 
     render() {
-        console.log(this.props)
-        const { schema, getComponent, specSelectors, name, required } = this.props
+        let { getComponent, getConfigs, schema, name } = this.props
 
-        const { isOAS3 } = specSelectors
+        const { showExtensions } = getConfigs()
+
+        if (!schema || !schema.get) {
+            // don't render if schema isn't correctly formed
+            return <div></div>
+        }
+
+        let type = schema.get("type")
+        let format = schema.get("format")
+        let xml = schema.get("xml")
+        let enumArray = schema.get("enum")
+        let title = schema.get("title") || name
+        let description = schema.get("description")
+        let extensions = getExtensions(schema)
+        let properties = schema
+            .filter((_, key) => ["enum", "type", "format", "description", "$$ref", "externalDocs"].indexOf(key) === -1)
+            .filterNot((_, key) => extensions.has(key))
+        let externalDocsUrl = schema.getIn(["externalDocs", "url"])
+        let externalDocsDescription = schema.getIn(["externalDocs", "description"])
+
         const Markdown = getComponent("Markdown", true)
         const EnumModel = getComponent("EnumModel")
         const Property = getComponent("Property")
-        const ModelCollapse = getComponent("ModelCollapse")
         const Link = getComponent("Link")
 
-        const type = schema.get("type")
-        const format = schema.get("format")
-        const xml = schema.get("xml")
-        const enumArray = schema.get("enum")
-        const title = schema.get("title") || name
-        const description = schema.get("description")
-        // const extensions = getExtensions(schema)
-        // const properties = schema
-        // .filter((_, key) => ["enum", "type", "format", "description", "$$ref", "externalDocs"].indexOf(key) === -1)
-        // .filterNot((_, key) => extensions.has(key))
-        const externalDocsUrl = schema.getIn(["externalDocs", "url"])
-        const externalDocsDescription = schema.getIn(["externalDocs", "description"])
-
-
-        const isDeprecated = isOAS3() && schema.get("deprecated")
-        const classNames = ["property-row"]
-        if (isDeprecated) {
-            classNames.push("deprecated")
-        }
-        if (required) {
-            classNames.push("required")
-        }
-
-        return <tr className={classNames.join(" ")}>
-            <td>{name}{required && <span className="star">*</span>}</td>
-            <td>
-                <span className="prop">
-                    <span className="prop-type">{type}</span>
-                </span>
-            </td>
-        </tr>
+        return <span className="model">
+            <span className="prop">
+                <span className="prop-type">{type}</span>
+                {format && <span className="prop-format">(${format})</span>}
+                {
+                    properties.size ? properties.entrySeq().map(([key, v]) => <Property key={`${key}-${v}`} propKey={key} propVal={v} propClass={propClass} />) : null
+                }
+                {
+                    showExtensions && extensions.size ? extensions.entrySeq().map(([key, v]) => <Property key={`${key}-${v}`} propKey={key} propVal={v} propClass={propClass} />) : null
+                }
+                {
+                    !description ? null :
+                        <Markdown source={description} />
+                }
+                {
+                    externalDocsUrl &&
+                    <div className="external-docs">
+                        <Link target="_blank" href={sanitizeUrl(externalDocsUrl)}>{externalDocsDescription || externalDocsUrl}</Link>
+                    </div>
+                }
+                {
+                    xml && xml.size ? (<span><br /><span className={propClass}>xml:</span>
+                        {
+                            xml.entrySeq().map(([key, v]) => <span key={`${key}-${v}`} className={propClass}><br />&nbsp;&nbsp;&nbsp;{key}: {String(v)}</span>).toArray()
+                        }
+                    </span>) : null
+                }
+                {
+                    enumArray && <EnumModel value={enumArray} getComponent={getComponent} />
+                }
+            </span>
+        </span>
     }
 }

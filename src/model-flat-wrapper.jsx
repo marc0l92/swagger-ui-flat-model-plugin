@@ -62,6 +62,7 @@ export default class ModelFlatWrapper extends ImmutablePureComponent {
     }
     return models
   }
+  // TODO: support primitive type at root or array at root
 
   render() {
     let { schema, getComponent, getConfigs, specSelectors, includeReadOnly, includeWriteOnly } = this.props

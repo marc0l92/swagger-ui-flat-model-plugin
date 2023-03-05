@@ -3,6 +3,7 @@ import ImmutablePureComponent from "react-immutable-pure-component"
 import ImPropTypes from "react-immutable-proptypes"
 import PropTypes from "prop-types"
 import { List } from "immutable"
+import { sanitizeUrl } from "./utils"
 
 const braceOpen = "{"
 const braceClose = "}"
@@ -21,6 +22,7 @@ export default class ModelFlat extends ImmutablePureComponent {
     render() {
         let { getComponent, getConfigs, specSelectors, schema, name, includeReadOnly, includeWriteOnly } = this.props
         const { showExtensions } = getConfigs()
+        const { isOAS3 } = specSelectors
         const ModelFlatProperty = getComponent('ModelFlatProperty')
         const Markdown = getComponent("Markdown", true)
         const ModelCollapse = getComponent("ModelCollapse")
@@ -73,13 +75,27 @@ export default class ModelFlat extends ImmutablePureComponent {
                                     }
                                 ).map((value, key) => {
                                     const isRequired = List.isList(requiredProperties) && requiredProperties.contains(key)
-                                    return <ModelFlatProperty
-                                        key={key}
-                                        schema={value}
-                                        getComponent={getComponent}
-                                        specSelectors={specSelectors}
-                                        name={key}
-                                        required={isRequired} />
+                                    const isDeprecated = isOAS3() && schema.get("deprecated")
+                                    const classNames = ["property-row"]
+                                    if (isDeprecated) {
+                                        classNames.push("deprecated")
+                                    }
+                                    if (isRequired) {
+                                        classNames.push("required")
+                                    }
+                                    return <tr key={key} className={classNames.join(" ")}>
+                                        <td>
+                                            {key}{isRequired && <span className="star">*</span>}
+                                        </td>
+                                        <td>
+                                            <ModelFlatProperty
+                                                key={key}
+                                                getComponent={getComponent}
+                                                getConfigs={getConfigs}
+                                                schema={value}
+                                                name={key} />
+                                        </td>
+                                    </tr>
                                 }).toArray()
                             }
                             {
@@ -101,13 +117,16 @@ export default class ModelFlat extends ImmutablePureComponent {
                                         }).toArray()
                             }
                             {
-                                !(additionalProperties && additionalProperties.size) ? null :
-                                    <ModelFlatProperty
-                                        schema={additionalProperties}
-                                        getComponent={getComponent}
-                                        specSelectors={specSelectors}
-                                        name={"< * >"}
-                                        required={false} />
+                                !(additionalProperties && additionalProperties.size) ? null : <tr>
+                                    <td>{"< * >:"}</td>
+                                    <td>
+                                        <ModelFlatProperty
+                                            getComponent={getComponent}
+                                            getConfigs={getConfigs}
+                                            schema={additionalProperties}
+                                            name={"< * >"} />
+                                    </td>
+                                </tr>
                             }
                         </tbody>
                     </table>
