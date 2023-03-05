@@ -2,7 +2,6 @@ import React from "react"
 import ImmutablePureComponent from "react-immutable-pure-component"
 import ImPropTypes from "react-immutable-proptypes"
 import PropTypes from "prop-types"
-import { List } from "immutable"
 
 export default class ModelFlatWrapper extends ImmutablePureComponent {
   static propTypes = {
@@ -29,8 +28,40 @@ export default class ModelFlatWrapper extends ImmutablePureComponent {
     return specSelectors.findDefinition(model)
   }
 
-  getAllModels = (schema) => {
-    return {}
+  // TODO: allOf, anyOf, not
+  getAllModels = (name, schema, models = {}) => {
+    if (schema) {
+      if (!name && schema.has("$$ref")) {
+        name = this.getModelName(schema.get("$$ref"))
+      }
+      if (schema.has('title')) {
+        name = schema.get('title')
+      }
+
+      const type = schema.get('type') || 'object'
+
+      if (type === 'object') {
+        models[name] = schema
+        const properties = schema.get("properties")
+        const additionalProperties = schema.get("additionalProperties")
+        if (properties) {
+          properties
+            .filter((value) => {
+              return (!value.get("readOnly") || includeReadOnly) &&
+                (!value.get("writeOnly") || includeWriteOnly)
+            })
+            .mapKeys((propertyName, propertyValue) => {
+              this.getAllModels(propertyName, propertyValue, models)
+            })
+        }
+        if (additionalProperties) {
+          this.getAllModels('<*>', additionalProperties, models)
+        }
+      } else if (type === 'array' && schema.has('items')) {
+        this.getAllModels(name, schema.get('items'), models)
+      }
+    }
+    return models
   }
 
   render() {
@@ -38,17 +69,14 @@ export default class ModelFlatWrapper extends ImmutablePureComponent {
     let { getComponent, specSelectors, schema, required, name, displayName, includeReadOnly, includeWriteOnly } = this.props
     const ModelFlat = getComponent('ModelFlat')
 
-    const $$ref = schema && schema.get("$$ref")
-    if (!name && $$ref) {
-      name = this.getModelName($$ref)
-    }
 
-    const models = this.getAllModels(schema)
+
+    const models = this.getAllModels(name, schema)
 
 
     return <div className="model-box">
       {Object.entries(models).map(([key, value]) => {
-        return <ModelFlat getComponent={getComponent} name={value.name} schema={value.schema} />
+        return <ModelFlat key={key} getComponent={getComponent} name={key} schema={value} />
       })}
     </div>
   }

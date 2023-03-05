@@ -42,7 +42,7 @@ export default class ModelFlat extends ImmutablePureComponent {
             <span className="model-title__text">{title}</span>
         </span>
 
-        return <span className="model">
+        return <div className="model">
             <ModelCollapse
                 modelName={name}
                 title={titleEl}
@@ -59,6 +59,6 @@ export default class ModelFlat extends ImmutablePureComponent {
                 </div>
                 <span className="brace-close">{braceClose}</span>
             </ModelCollapse>
-        </span>
+        </div>
     }
 }
