@@ -1026,6 +1026,8 @@
             },
             "Category": {
                 "type": "object",
+                "maxProperties": 88,
+                "minProperties": 0,
                 "properties": {
                     "id": {
                         "type": "integer",
@@ -1043,6 +1045,8 @@
             },
             "User": {
                 "type": "object",
+                "maxProperties": 77,
+                "minProperties": 0,
                 "properties": {
                     "id": {
                         "type": "integer",
@@ -1086,6 +1090,8 @@
             },
             "Tag": {
                 "type": "object",
+                "maxProperties": 66,
+                "minProperties": 0,
                 "properties": {
                     "id": {
                         "type": "integer",
