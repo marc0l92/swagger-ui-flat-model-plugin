@@ -19,7 +19,6 @@ export default class ModelFlat extends ImmutablePureComponent {
     }
 
     render() {
-        console.log(this.props)
         let { getComponent, getConfigs, specSelectors, schema, name, includeReadOnly, includeWriteOnly } = this.props
         const { showExtensions } = getConfigs()
         const ModelFlatProperty = getComponent('ModelFlatProperty')
