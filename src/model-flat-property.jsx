@@ -39,39 +39,51 @@ export default class Primitive extends Component {
         let externalDocsDescription = schema.getIn(["externalDocs", "description"])
 
         const Markdown = getComponent("Markdown", true)
-        const EnumModel = getComponent("EnumModel")
         const Property = getComponent("Property")
         const Link = getComponent("Link")
 
         return <span className="model">
             <span className="prop">
-                <span className="prop-type">{type}</span>
-                {format && <span className="prop-format">(${format})</span>}
                 {
-                    properties.size ? properties.entrySeq().map(([key, v]) => <Property key={`${key}-${v}`} propKey={key} propVal={v} propClass={propClass} />) : null
+                    type !== 'object' ? null : <span>object</span>
                 }
                 {
-                    showExtensions && extensions.size ? extensions.entrySeq().map(([key, v]) => <Property key={`${key}-${v}`} propKey={key} propVal={v} propClass={propClass} />) : null
+                    type !== 'array' ? null : <span>Array[item]</span>
                 }
                 {
-                    !description ? null :
-                        <Markdown source={description} />
-                }
-                {
-                    externalDocsUrl &&
-                    <div className="external-docs">
-                        <Link target="_blank" href={sanitizeUrl(externalDocsUrl)}>{externalDocsDescription || externalDocsUrl}</Link>
-                    </div>
-                }
-                {
-                    xml && xml.size ? (<span><br /><span className={propClass}>xml:</span>
+                    !(type !== 'object' && type !== 'array') ? null : <>
+                        <span className="prop-type">{type}</span>
+                        {format && <span className="prop-format">(${format})</span>}
                         {
-                            xml.entrySeq().map(([key, v]) => <span key={`${key}-${v}`} className={propClass}><br />&nbsp;&nbsp;&nbsp;{key}: {String(v)}</span>).toArray()
+                            properties.size ? properties.entrySeq().map(([key, v]) => <Property key={`${key}-${v}`} propKey={key} propVal={v} propClass={propClass} />) : null
                         }
-                    </span>) : null
-                }
-                {
-                    enumArray && <EnumModel value={enumArray} getComponent={getComponent} />
+                        {
+                            showExtensions && extensions.size ? extensions.entrySeq().map(([key, v]) => <Property key={`${key}-${v}`} propKey={key} propVal={v} propClass={propClass} />) : null
+                        }
+                        {
+                            !description ? null :
+                                <Markdown source={description} />
+                        }
+                        {
+                            externalDocsUrl &&
+                            <div className="external-docs">
+                                <Link target="_blank" href={sanitizeUrl(externalDocsUrl)}>{externalDocsDescription || externalDocsUrl}</Link>
+                            </div>
+                        }
+                        {
+                            xml && xml.size ? (<span><br /><span className={propClass}>xml:</span>
+                                {
+                                    xml.entrySeq().map(([key, v]) => <span key={`${key}-${v}`} className={propClass}><br />&nbsp;&nbsp;&nbsp;{key}: {String(v)}</span>).toArray()
+                                }
+                            </span>) : null
+                        }
+                        {
+                            enumArray && <span className="prop-enum">
+                                Enum:<br />
+                                [ {enumArray.join(", ")} ]
+                            </span>
+                        }
+                    </>
                 }
             </span>
         </span>
