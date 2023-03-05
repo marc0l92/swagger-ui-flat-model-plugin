@@ -40,7 +40,7 @@ const distOptions = {
 /** @type {esbuild.BuildOptions} */
 const testOptions = Object.assign({}, distOptions, {
     sourcemap: 'inline',
-    outdir: './test',
+    outdir: './test/js',
     minify: false,
 })
 
@@ -51,11 +51,8 @@ fs.copyFileSync('./node_modules/swagger-ui-dist/swagger-ui-bundle.js', './test/j
 fs.copyFileSync('./node_modules/swagger-ui-dist/swagger-ui-bundle.js', './test/js/swagger-ui-bundle.js.map')
 
 if (prod) {
-    esbuild.build(testOptions).catch(() => process.exit(1))
     esbuild.build(distOptions).catch(() => process.exit(1))
 } else {
     const webCtxTest = await esbuild.context(testOptions)
     webCtxTest.watch().catch(() => process.exit(1))
-    const webCtx = await esbuild.context(distOptions)
-    webCtx.watch().catch(() => process.exit(1))
 }

@@ -1101,6 +1101,8 @@
             },
             "Pet": {
                 "description": "An animal to buy",
+                "maxProperties": 99,
+                "minProperties": 0,
                 "required": [
                     "name",
                     "photoUrls"
@@ -1110,11 +1112,18 @@
                     "id": {
                         "type": "integer",
                         "format": "int64",
-                        "example": 10
+                        "example": 10,
+                        "description": "idnetifier",
+                        "multipleOf": 1,
+                        "default": 0
                     },
                     "name": {
                         "type": "string",
-                        "example": "doggie"
+                        "example": "doggie",
+                        "maxLength": 100,
+                        "minLength": 0,
+                        "description": "name of the pet",
+                        "default": "unnamed"
                     },
                     "category": {
                         "$ref": "#/components/schemas/Category"

@@ -8,8 +8,6 @@ export default class ModelFlatWrapper extends ImmutablePureComponent {
     schema: ImPropTypes.map.isRequired,
     getComponent: PropTypes.func.isRequired,
     specSelectors: PropTypes.object.isRequired,
-    name: PropTypes.string,
-    required: PropTypes.bool,
     includeReadOnly: PropTypes.bool,
     includeWriteOnly: PropTypes.bool,
   }
@@ -28,8 +26,8 @@ export default class ModelFlatWrapper extends ImmutablePureComponent {
     return specSelectors.findDefinition(model)
   }
 
-  // TODO: allOf, anyOf, not
-  getAllModels = (name, schema, models = {}) => {
+  // TODO: allOf, anyOf, not, $ref
+  getAllModels = (name, schema, options, models = {}) => {
     if (schema) {
       if (!name && schema.has("$$ref")) {
         name = this.getModelName(schema.get("$$ref"))
@@ -47,36 +45,39 @@ export default class ModelFlatWrapper extends ImmutablePureComponent {
         if (properties) {
           properties
             .filter((value) => {
-              return (!value.get("readOnly") || includeReadOnly) &&
-                (!value.get("writeOnly") || includeWriteOnly)
+              return (!value.get("readOnly") || options.includeReadOnly) &&
+                (!value.get("writeOnly") || options.includeWriteOnly)
             })
             .mapKeys((propertyName, propertyValue) => {
-              this.getAllModels(propertyName, propertyValue, models)
+              this.getAllModels(propertyName, propertyValue, options, models)
             })
         }
         if (additionalProperties) {
-          this.getAllModels('<*>', additionalProperties, models)
+          this.getAllModels('<*>', additionalProperties, options, models)
         }
       } else if (type === 'array' && schema.has('items')) {
-        this.getAllModels(name, schema.get('items'), models)
+        this.getAllModels(name, schema.get('items'), options, models)
       }
     }
     return models
   }
 
   render() {
-    console.log(this.props)
-    let { getComponent, specSelectors, schema, required, name, displayName, includeReadOnly, includeWriteOnly } = this.props
+    let { schema, getComponent, specSelectors, includeReadOnly, includeWriteOnly } = this.props
     const ModelFlat = getComponent('ModelFlat')
 
-
-
-    const models = this.getAllModels(name, schema)
-
+    const models = this.getAllModels(null, schema, { includeReadOnly, includeWriteOnly })
 
     return <div className="model-box">
       {Object.entries(models).map(([key, value]) => {
-        return <ModelFlat key={key} getComponent={getComponent} name={key} schema={value} />
+        return <ModelFlat
+          key={key}
+          name={key}
+          schema={value}
+          getComponent={getComponent}
+          specSelectors={specSelectors}
+          includeReadOnly={includeReadOnly}
+          includeWriteOnly={includeWriteOnly} />
       })}
     </div>
   }

@@ -10,15 +10,15 @@ export default class ModelFlat extends ImmutablePureComponent {
     static propTypes = {
         schema: ImPropTypes.map.isRequired,
         getComponent: PropTypes.func.isRequired,
-        //     specSelectors: PropTypes.object.isRequired,
-        //     name: PropTypes.string,
-        //     required: PropTypes.bool,
-        //     includeReadOnly: PropTypes.bool,
-        //     includeWriteOnly: PropTypes.bool,
+        specSelectors: PropTypes.object.isRequired,
+        name: PropTypes.string,
+        includeReadOnly: PropTypes.bool,
+        includeWriteOnly: PropTypes.bool,
     }
 
     render() {
-        let { getComponent, specSelectors, schema, required, name, includeReadOnly, includeWriteOnly } = this.props
+        console.log(this.props)
+        let { getComponent, specSelectors, schema, name, includeReadOnly, includeWriteOnly } = this.props
         const ModelFlatProperty = getComponent('ModelFlatProperty')
         const Markdown = getComponent("Markdown", true)
         const ModelCollapse = getComponent("ModelCollapse")
@@ -34,13 +34,8 @@ export default class ModelFlat extends ImmutablePureComponent {
         const externalDocsUrl = schema.getIn(["externalDocs", "url"])
         const externalDocsDescription = schema.getIn(["externalDocs", "description"])
 
-        const collapsedContent = (<span>
-            <span>{braceOpen}</span>...<span>{braceClose}</span>
-        </span>)
-
-        const titleEl = title && <span className="model-title">
-            <span className="model-title__text">{title}</span>
-        </span>
+        const collapsedContent = (<span><span>{braceOpen}</span>...<span>{braceClose}</span></span>)
+        const titleEl = title && <span className="model-title"><span className="model-title__text">{title}</span></span>
 
         return <div className="model">
             <ModelCollapse
@@ -49,7 +44,7 @@ export default class ModelFlat extends ImmutablePureComponent {
                 expanded={true}
                 collapsedContent={collapsedContent}>
                 <span className="brace-open object">{braceOpen}</span>
-                <div className="inner-object">
+                <div className="object-description">
                     {
                         !description ? null : <div className="description">
                             <span>description:</span>
@@ -57,7 +52,24 @@ export default class ModelFlat extends ImmutablePureComponent {
                         </div>
                     }
                 </div>
-                <span className="brace-close">{braceClose}</span>
+                <div className="inner-object">
+                    {
+                        properties.map((value, key) => {
+                            return <ModelFlatProperty
+                                schema={value}
+                                getComponent={getComponent}
+                                specSelectors={specSelectors}
+                                name={key}
+                                required={true} />
+                        }).toArray()
+                    }
+                </div>
+                <div className="brace-close">{braceClose}</div>
+                {
+                    infoProperties.map((value, key) => {
+                        return <p>{key}: {value}</p>
+                    }).toArray()
+                }
             </ModelCollapse>
         </div>
     }
