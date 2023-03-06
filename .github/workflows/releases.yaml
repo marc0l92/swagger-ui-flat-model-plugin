@@ -27,7 +27,7 @@ jobs:
       - name: Build
         id: build
         run: |
-          zip -r ${{ env.PROJECT_NAME }}.zip dir
+          zip -r ${{ env.PROJECT_NAME }}.zip ./dist
           echo "tag_name=$(git tag --sort version:refname | tail -n 1)" >> $GITHUB_OUTPUT
       - name: Create Release
         id: create_release
