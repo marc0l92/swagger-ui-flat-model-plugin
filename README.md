@@ -6,6 +6,8 @@ Plugin for [swagger-ui](https://github.com/swagger-api/swagger-ui) to add an add
 
 [Plugin Demo](https://marc0l92.github.io/swagger-ui-flat-model-plugin/)
 
+![Preview](./docs/preview1.png)
+
 ## How to install it
 
 - Download the files in the `dist` folder:
