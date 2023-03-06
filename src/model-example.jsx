@@ -164,6 +164,7 @@ export default class ModelExample extends React.Component {
             tabIndex="0"
           >
             <ModelFlatWrapper
+              namespace={modelFlatPanelId}
               schema={schema}
               getComponent={getComponent}
               getConfigs={getConfigs}

@@ -10,6 +10,7 @@ const braceClose = "}"
 
 export default class ModelFlat extends ImmutablePureComponent {
     static propTypes = {
+        namespace: PropTypes.string.isRequired,
         schema: ImPropTypes.map.isRequired,
         getComponent: PropTypes.func.isRequired,
         getConfigs: PropTypes.func.isRequired,
@@ -20,7 +21,7 @@ export default class ModelFlat extends ImmutablePureComponent {
     }
 
     render() {
-        let { getComponent, getConfigs, specSelectors, schema, name, includeReadOnly, includeWriteOnly } = this.props
+        let { namespace, getComponent, getConfigs, specSelectors, schema, name, includeReadOnly, includeWriteOnly } = this.props
         const { showExtensions } = getConfigs()
         const { isOAS3 } = specSelectors
         const ModelFlatProperty = getComponent('ModelFlatProperty')
@@ -41,7 +42,7 @@ export default class ModelFlat extends ImmutablePureComponent {
         const externalDocsDescription = schema.getIn(["externalDocs", "description"])
 
         const collapsedContent = (<span><span>{braceOpen}</span>...<span>{braceClose}</span></span>)
-        const titleEl = title && <span className="model-title"><span className="model-title__text">{title}</span></span>
+        const titleEl = title && <span className="model-title" id={namespace + '__' + title}><span className="model-title__text">{title}</span></span>
 
         return <div className="model">
             <ModelCollapse
@@ -89,6 +90,7 @@ export default class ModelFlat extends ImmutablePureComponent {
                                         </td>
                                         <td>
                                             <ModelFlatProperty
+                                                namespace={namespace}
                                                 key={key}
                                                 getComponent={getComponent}
                                                 getConfigs={getConfigs}
@@ -121,6 +123,7 @@ export default class ModelFlat extends ImmutablePureComponent {
                                     <td>{"< * >:"}</td>
                                     <td>
                                         <ModelFlatProperty
+                                            namespace={namespace}
                                             getComponent={getComponent}
                                             getConfigs={getConfigs}
                                             schema={additionalProperties}

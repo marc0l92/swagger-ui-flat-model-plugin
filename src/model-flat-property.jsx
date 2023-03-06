@@ -6,6 +6,7 @@ const propClass = "property primitive"
 
 export default class ModelFlatProperty extends Component {
     static propTypes = {
+        namespace: PropTypes.string.isRequired,
         schema: PropTypes.object.isRequired,
         getComponent: PropTypes.func.isRequired,
         getConfigs: PropTypes.func.isRequired,
@@ -15,8 +16,41 @@ export default class ModelFlatProperty extends Component {
         expandDepth: PropTypes.number
     }
 
+    getFilteredProperties(schema, extensions) {
+        return schema
+            .filter((_, key) => ["example", "enum", "type", "description", "$$ref", "externalDocs", "items", "properties", "additionalProperties", "xml"].indexOf(key) === -1)
+            .filterNot((_, key) => extensions.has(key))
+    }
+
+    renderTypeAndProperties(schema) {
+        return <span className="prop-type">
+            {
+                type !== 'object' ? null : innerItem.name
+            }
+            {
+                type !== 'array' ? null : <>
+                    Array[{innerItem.name}{
+                        !(innerItem.properties && innerItem.properties.size) ? null : <span className="properties-list">({
+                            innerItem.properties.entrySeq().map(([key, v]) =>
+                                <span key={`${key}-${v}`} className={propClass} >{key}: {v}</span>
+                            )
+                        })</span>
+                    }]
+                    {/* <ModelFlatProperty
+                    getComponent={getComponent}
+                    getConfigs={getConfigs}
+                    schema={innerItem.schema}
+                    name={innerItem.name} /> */}
+                </>
+            }
+            {
+                !(type !== 'object' && type !== 'array') ? null : type
+            }
+        </span>
+    }
+
     render() {
-        let { getComponent, getConfigs, schema, name } = this.props
+        const { namespace, getComponent, getConfigs, schema, name } = this.props
         console.log(name, schema.toJS())
 
         const { showExtensions } = getConfigs()
@@ -26,18 +60,15 @@ export default class ModelFlatProperty extends Component {
             return <div></div>
         }
 
-        let type = schema.get("type")
-        let xml = schema.get("xml")
-        let enumArray = schema.get("enum")
-        // let title = schema.get("title") || name
-        let description = schema.get("description")
-        let example = schema.get("example")
-        let extensions = getExtensions(schema)
-        let properties = schema
-            .filter((_, key) => ["example", "enum", "type", "description", "$$ref", "externalDocs", "items", "properties", "additionalProperties", "xml"].indexOf(key) === -1)
-            .filterNot((_, key) => extensions.has(key))
-        let externalDocsUrl = schema.getIn(["externalDocs", "url"])
-        let externalDocsDescription = schema.getIn(["externalDocs", "description"])
+        const type = schema.get("type")
+        const xml = schema.get("xml")
+        const enumArray = schema.get("enum")
+        const description = schema.get("description")
+        const example = schema.get("example")
+        const extensions = getExtensions(schema)
+        const properties = this.getFilteredProperties(schema, extensions)
+        const externalDocsUrl = schema.getIn(["externalDocs", "url"])
+        const externalDocsDescription = schema.getIn(["externalDocs", "description"])
 
         const Markdown = getComponent("Markdown", true)
         const Property = getComponent("Property")
@@ -61,6 +92,7 @@ export default class ModelFlatProperty extends Component {
                     innerItem = {
                         name: itemsType,
                         schema: schema.get('items'),
+                        properties: this.getFilteredProperties(schema.get('items'), extensions),
                     }
                 }
             } else {
@@ -75,11 +107,17 @@ export default class ModelFlatProperty extends Component {
             <span className="prop">
                 <span className="prop-type">
                     {
-                        type !== 'object' ? null : innerItem.name
+                        type !== 'object' ? null : <a href={'#' + namespace + '__' + innerItem.name}>{innerItem.name}</a>
                     }
                     {
                         type !== 'array' ? null : <>
-                            Array[{innerItem.name}]
+                            Array[{innerItem.name}{
+                                !(innerItem.properties && innerItem.properties.size) ? null : <span className="properties-list">({
+                                    innerItem.properties.entrySeq().map(([key, v]) =>
+                                        <span key={`${key}-${v}`} className={propClass} >{key}: {v}</span>
+                                    )
+                                })</span>
+                            }]
                             {/* <ModelFlatProperty
                                 getComponent={getComponent}
                                 getConfigs={getConfigs}
@@ -94,9 +132,12 @@ export default class ModelFlatProperty extends Component {
                 {
                     !showProperties ? null : <>
                         {
-                            !(properties && properties.size) ? null : <span className="properties-list">( {properties.entrySeq().map(([key, v]) =>
-                                <span key={`${key}-${v}`} className={propClass} >{key}: {v}</span>
-                            )} )</span>
+                            !(properties && properties.size) ? null : <span className="properties-list">(
+                                {
+                                    properties.entrySeq().map(([key, v]) =>
+                                        <span key={`${key}-${v}`} className={propClass} >{key}: {v}</span>
+                                    )
+                                })</span>
                         }
                         {
                             !(showExtensions && extensions.size) ? null : extensions.entrySeq().map(([key, v]) =>

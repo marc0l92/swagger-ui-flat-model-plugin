@@ -6,6 +6,7 @@ import { getModelName } from './utils'
 
 export default class ModelFlatWrapper extends ImmutablePureComponent {
   static propTypes = {
+    namespace: PropTypes.string.isRequired,
     schema: ImPropTypes.map.isRequired,
     getComponent: PropTypes.func.isRequired,
     getConfigs: PropTypes.func.isRequired,
@@ -47,7 +48,7 @@ export default class ModelFlatWrapper extends ImmutablePureComponent {
   // TODO: support primitive type at root or array at root
 
   render() {
-    let { schema, getComponent, getConfigs, specSelectors, includeReadOnly, includeWriteOnly } = this.props
+    let { namespace, schema, getComponent, getConfigs, specSelectors, includeReadOnly, includeWriteOnly } = this.props
     const ModelFlat = getComponent('ModelFlat')
 
     const models = this.getAllModels(null, schema, { includeReadOnly, includeWriteOnly })
@@ -55,6 +56,7 @@ export default class ModelFlatWrapper extends ImmutablePureComponent {
     return <div className="model-box schema-flat">
       {Object.entries(models).map(([key, value]) => {
         return <ModelFlat
+          namespace={namespace}
           key={key}
           name={key}
           schema={value}

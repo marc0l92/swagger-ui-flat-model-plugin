@@ -1137,6 +1137,7 @@
                     "photoUrls": {
                         "description": "photoUrls array description",
                         "type": "array",
+                        "maxItems": 100,
                         "xml": {
                             "wrapped": true
                         },
