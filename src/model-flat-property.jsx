@@ -24,13 +24,16 @@ export default class ModelFlatProperty extends Component {
     }
 
     renderProperties(schema) {
-        const properties = this.getFilteredProperties(schema)
-        if (properties.size) {
-            return <span className="properties-list">({
-                properties.entrySeq().map(([key, v]) =>
-                    <span key={`${key}-${v}`} className={propClass} >{key}: {v}</span>
-                )
-            })</span>
+        if (schema) {
+            const type = schema.get("type") || 'object'
+            const properties = this.getFilteredProperties(schema)
+            if (type !== 'object' && properties.size) {
+                return <span className="properties-list">({
+                    properties.entrySeq().map(([key, v]) =>
+                        <span key={`${key}-${v}`} className={propClass} >{key}: {v}</span>
+                    )
+                })</span>
+            }
         }
         return ''
     }
@@ -44,11 +47,11 @@ export default class ModelFlatProperty extends Component {
             </span>
         } else if (type === 'array' && schema.get('items')) {
             return <span className="prop-type">
-                Array[{this.renderTypeAndProperties(schema.get('items'), namespace)}{this.renderProperties(schema.get('items'))}]
+                Array[{this.renderTypeAndProperties(schema.get('items'), namespace)}{this.renderProperties(schema.get('items'))}]{this.renderProperties(schema.get('items'))}
             </span>
         } else {
             return <span className="prop-type">
-                {type || 'object'}
+                {type || 'object'}{this.renderProperties(schema.get('items'))}
             </span>
         }
     }
@@ -67,7 +70,6 @@ export default class ModelFlatProperty extends Component {
         const description = schema.get("description")
         const example = schema.get("example")
         const extensions = getExtensions(schema)
-        const properties = this.getFilteredProperties(schema)
         const externalDocsUrl = schema.getIn(["externalDocs", "url"])
         const externalDocsDescription = schema.getIn(["externalDocs", "description"])
 
@@ -79,14 +81,6 @@ export default class ModelFlatProperty extends Component {
             <span className="prop">
                 {
                     this.renderTypeAndProperties(schema, namespace)
-                }
-                {
-                    !(properties && properties.size) ? null : <span className="properties-list">(
-                        {
-                            properties.entrySeq().map(([key, v]) =>
-                                <span key={`${key}-${v}`} className={propClass} >{key}: {v}</span>
-                            )
-                        })</span>
                 }
                 {
                     !(showExtensions && extensions.size) ? null : extensions.entrySeq().map(([key, v]) =>

@@ -67,7 +67,10 @@ export default class ModelFlat extends ImmutablePureComponent {
                                     <td><Link target="_blank" href={sanitizeUrl(externalDocsUrl)}>{externalDocsDescription || externalDocsUrl}</Link></td>
                                 </tr>
                             }
-                            {!deprecated ? null : <tr className="property"><td>deprecated:</td><td>true</td></tr>}
+                            {
+                                !deprecated ? null :
+                                    <tr className="property"><td>deprecated:</td><td>true</td></tr>
+                            }
                             {
                                 !(properties && properties.size) ? null : properties.filter(
                                     (value) => {
