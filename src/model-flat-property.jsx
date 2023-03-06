@@ -27,14 +27,14 @@ export default class ModelFlatProperty extends Component {
         }
 
         let type = schema.get("type")
-        let format = schema.get("format")
         let xml = schema.get("xml")
         let enumArray = schema.get("enum")
         // let title = schema.get("title") || name
         let description = schema.get("description")
+        let example = schema.get("example")
         let extensions = getExtensions(schema)
         let properties = schema
-            .filter((_, key) => ["enum", "type", "format", "description", "$$ref", "externalDocs"].indexOf(key) === -1)
+            .filter((_, key) => ["example", "enum", "type", "description", "$$ref", "externalDocs", "items", "properties", "additionalProperties", "xml"].indexOf(key) === -1)
             .filterNot((_, key) => extensions.has(key))
         let externalDocsUrl = schema.getIn(["externalDocs", "url"])
         let externalDocsDescription = schema.getIn(["externalDocs", "description"])
@@ -80,11 +80,11 @@ export default class ModelFlatProperty extends Component {
                     {
                         type !== 'array' ? null : <>
                             Array[{innerItem.name}]
-                            <ModelFlatProperty
+                            {/* <ModelFlatProperty
                                 getComponent={getComponent}
                                 getConfigs={getConfigs}
                                 schema={innerItem.schema}
-                                name={innerItem.name} />
+                                name={innerItem.name} /> */}
                         </>
                     }
                     {
@@ -93,16 +93,28 @@ export default class ModelFlatProperty extends Component {
                 </span>
                 {
                     !showProperties ? null : <>
-                        {format && <span className="prop-format">(${format})</span>}
                         {
-                            properties.size ? properties.entrySeq().map(([key, v]) => <Property key={`${key}-${v}`} propKey={key} propVal={v} propClass={propClass} />) : null
+                            !(properties && properties.size) ? null : <span className="properties-list">( {properties.entrySeq().map(([key, v]) =>
+                                <span key={`${key}-${v}`} className={propClass} >{key}: {v}</span>
+                            )} )</span>
                         }
                         {
-                            showExtensions && extensions.size ? extensions.entrySeq().map(([key, v]) => <Property key={`${key}-${v}`} propKey={key} propVal={v} propClass={propClass} />) : null
+                            !(showExtensions && extensions.size) ? null : extensions.entrySeq().map(([key, v]) =>
+                                <Property key={`${key}-${v}`} propKey={key} propVal={v} propClass={propClass} />
+                            )
                         }
                         {
-                            !description ? null :
-                                <Markdown source={description} />
+                            example &&
+                            <Property propKey="example" propVal={example} propClass={propClass} />
+                        }
+                        {
+                            enumArray && <span className="prop-enum">
+                                Enum: [ {enumArray.join(", ")} ]
+                            </span>
+                        }
+                        {
+                            description &&
+                            <Markdown source={description} />
                         }
                         {
                             externalDocsUrl &&
@@ -111,17 +123,12 @@ export default class ModelFlatProperty extends Component {
                             </div>
                         }
                         {
-                            xml && xml.size ? (<span><br /><span className={propClass}>xml:</span>
+                            !(xml && xml.size) ? null : <div>
+                                <span className={propClass}>xml:</span>
                                 {
                                     xml.entrySeq().map(([key, v]) => <span key={`${key}-${v}`} className={propClass}><br />&nbsp;&nbsp;&nbsp;{key}: {String(v)}</span>).toArray()
                                 }
-                            </span>) : null
-                        }
-                        {
-                            enumArray && <span className="prop-enum">
-                                Enum:<br />
-                                [ {enumArray.join(", ")} ]
-                            </span>
+                            </div>
                         }
                     </>
                 }
