@@ -1135,14 +1135,36 @@
                         "$ref": "#/components/schemas/Category"
                     },
                     "photoUrls": {
+                        "description": "photoUrls array description",
                         "type": "array",
                         "xml": {
                             "wrapped": true
                         },
                         "items": {
                             "type": "string",
+                            "maxLength": 200,
+                            "description": "photoUrls item description",
                             "xml": {
                                 "name": "photoUrl"
+                            }
+                        }
+                    },
+                    "photoUrlsMap": {
+                        "description": "photoUrls array description",
+                        "type": "array",
+                        "xml": {
+                            "wrapped": true
+                        },
+                        "items": {
+                            "description": "photoUrls array array description",
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "maxLength": 200,
+                                "description": "photoUrls item description",
+                                "xml": {
+                                    "name": "photoUrl"
+                                }
                             }
                         }
                     },
