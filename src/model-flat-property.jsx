@@ -97,8 +97,9 @@ export default class ModelFlatProperty extends Component {
                     </span>
                 }
                 {
-                    description &&
-                    <Markdown source={description} />
+                    description && <span className="description">
+                        <Markdown source={description} />
+                    </span>
                 }
                 {
                     externalDocsUrl &&

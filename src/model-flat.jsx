@@ -56,8 +56,7 @@ export default class ModelFlat extends ImmutablePureComponent {
                         <tbody>
                             {
                                 !description ? null : <tr className="description">
-                                    <td>description:</td>
-                                    <td><Markdown source={description} /></td>
+                                    <td colSpan={2}><Markdown source={description} /></td>
                                 </tr>
                             }
                             {
