@@ -37,7 +37,6 @@ export const getModelName = (schema, namespace) => {
   }
   const objHash = hash(schema.toJS())
   if (!(objHash in modelsIndex[namespace].models)) {
-    console.log(schema.toJS())
     modelsIndex[namespace].index++
     modelsIndex[namespace].models[objHash] = 'Model_' + modelsIndex[namespace].index
   }

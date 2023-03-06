@@ -39,7 +39,6 @@ export default class ModelFlatProperty extends Component {
     }
 
     renderTypeAndProperties(schema, namespace) {
-        console.log(schema.toJS())
         const type = schema.get("type")
         if (type === 'object') {
             const name = getModelName(schema, namespace)

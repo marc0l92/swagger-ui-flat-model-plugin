@@ -15,7 +15,6 @@ export default class ModelFlatWrapper extends ImmutablePureComponent {
     includeWriteOnly: PropTypes.bool,
   }
 
-  // TODO: allOf, anyOf, not, $ref
   getAllModels(namespace, schema, options, models = {}) {
     if (schema) {
       const type = schema.get('type') || 'object'
@@ -36,7 +35,7 @@ export default class ModelFlatWrapper extends ImmutablePureComponent {
             })
         }
         if (additionalProperties) {
-          this.getAllModels(namespace, additionalProperties, options, models) // TODO: there should be no models with <*> name
+          this.getAllModels(namespace, additionalProperties, options, models)
         }
       } else if (type === 'array' && schema.get('items')) {
         this.getAllModels(namespace, schema.get('items'), options, models)
@@ -44,7 +43,6 @@ export default class ModelFlatWrapper extends ImmutablePureComponent {
     }
     return models
   }
-  // TODO: support primitive type at root or array at root
 
   render() {
     let { namespace, schema, getComponent, getConfigs, specSelectors, includeReadOnly, includeWriteOnly } = this.props
