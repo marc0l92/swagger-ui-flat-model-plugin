@@ -29,11 +29,11 @@
     background-color: rgba(255, 255, 255, .3);
 }
 
-.swagger-ui .description .markdown p {
+.swagger-ui .description .renderedMarkdown p {
     margin: 0.5em auto;
 }
 
-.swagger-ui .model .description .markdown {
+.swagger-ui .model .description .renderedMarkdown {
     border-left: solid 3px #999;
     padding-left: 0.5em;
 }
