@@ -1,4 +1,7 @@
 import { sanitizeUrl as braintreeSanitizeUrl } from "@braintree/sanitize-url"
+import hash from 'object-hash'
+
+const modelsIndex = {}
 
 export function sanitizeUrl(url) {
   if (typeof url !== "string" || url === "") {
@@ -22,13 +25,21 @@ export const getRefName = (ref) => {
   return ''
 }
 
-export const getModelName = (schema) => {
-  let name = ''
-  if (schema.get("$$ref")) {
-    name = getRefName(schema.get("$$ref"))
-  }
+export const getModelName = (schema, namespace) => {
   if (schema.get('title')) {
-    name = schema.get('title')
+    return schema.get('title')
   }
-  return name
+  if (schema.get("$$ref")) {
+    return getRefName(schema.get("$$ref"))
+  }
+  if (!(namespace in modelsIndex)) {
+    modelsIndex[namespace] = { index: 0, models: {} }
+  }
+  const objHash = hash(schema.toJS())
+  if (!(objHash in modelsIndex[namespace].models)) {
+    console.log(schema.toJS())
+    modelsIndex[namespace].index++
+    modelsIndex[namespace].models[objHash] = 'Model_' + modelsIndex[namespace].index
+  }
+  return modelsIndex[namespace].models[objHash]
 }

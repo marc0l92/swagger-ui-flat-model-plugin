@@ -16,14 +16,13 @@ export default class ModelFlatWrapper extends ImmutablePureComponent {
   }
 
   // TODO: allOf, anyOf, not, $ref
-  getAllModels = (name, schema, options, models = {}) => {
+  getAllModels(namespace, schema, options, models = {}) {
     if (schema) {
-      name = getModelName(schema) || name
-
       const type = schema.get('type') || 'object'
 
       if (type === 'object') {
-        models[name] = schema
+        const modelName = getModelName(schema, namespace)
+        models[modelName] = schema
         const properties = schema.get("properties")
         const additionalProperties = schema.get("additionalProperties")
         if (properties) {
@@ -33,14 +32,14 @@ export default class ModelFlatWrapper extends ImmutablePureComponent {
                 (!value.get("writeOnly") || options.includeWriteOnly)
             })
             .mapKeys((propertyName, propertyValue) => {
-              this.getAllModels(propertyName, propertyValue, options, models)
+              this.getAllModels(namespace, propertyValue, options, models)
             })
         }
         if (additionalProperties) {
-          this.getAllModels('<*>', additionalProperties, options, models) // TODO: there should be no models with <*> name
+          this.getAllModels(namespace, additionalProperties, options, models) // TODO: there should be no models with <*> name
         }
       } else if (type === 'array' && schema.get('items')) {
-        this.getAllModels(name, schema.get('items'), options, models)
+        this.getAllModels(namespace, schema.get('items'), options, models)
       }
     }
     return models
@@ -50,8 +49,10 @@ export default class ModelFlatWrapper extends ImmutablePureComponent {
   render() {
     let { namespace, schema, getComponent, getConfigs, specSelectors, includeReadOnly, includeWriteOnly } = this.props
     const ModelFlat = getComponent('ModelFlat')
+    const ModelFlatProperty = getComponent('ModelFlatProperty')
 
-    const models = this.getAllModels(null, schema, { includeReadOnly, includeWriteOnly })
+    const type = schema.get('type') || 'object'
+    const models = this.getAllModels(namespace, schema, { includeReadOnly, includeWriteOnly })
 
     return <div className="model-box schema-flat">
       {Object.entries(models).map(([key, value]) => {
@@ -66,6 +67,15 @@ export default class ModelFlatWrapper extends ImmutablePureComponent {
           includeReadOnly={includeReadOnly}
           includeWriteOnly={includeWriteOnly} />
       })}
+      {
+        type === 'object' ? null :
+          <ModelFlatProperty
+            namespace={namespace}
+            getComponent={getComponent}
+            getConfigs={getConfigs}
+            schema={schema}
+            name={""} />
+      }
     </div>
   }
 }

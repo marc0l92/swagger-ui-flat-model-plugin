@@ -39,19 +39,20 @@ export default class ModelFlatProperty extends Component {
     }
 
     renderTypeAndProperties(schema, namespace) {
+        console.log(schema.toJS())
         const type = schema.get("type")
         if (type === 'object') {
-            const name = getModelName(schema)
+            const name = getModelName(schema, namespace)
             return <span className="prop-type">
                 <a href={'#' + namespace + '__' + name}>{name}</a>
             </span>
         } else if (type === 'array' && schema.get('items')) {
             return <span className="prop-type">
-                Array[{this.renderTypeAndProperties(schema.get('items'), namespace)}{this.renderProperties(schema.get('items'))}]{this.renderProperties(schema.get('items'))}
+                Array[{this.renderTypeAndProperties(schema.get('items'), namespace)}{this.renderProperties(schema.get('items'))}]{this.renderProperties(schema)}
             </span>
         } else {
             return <span className="prop-type">
-                {type || 'object'}{this.renderProperties(schema.get('items'))}
+                {type || 'object'}{this.renderProperties(schema)}
             </span>
         }
     }
