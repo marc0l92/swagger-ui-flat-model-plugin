@@ -1,0 +1,43 @@
+name: Create new release on new tag
+
+on:
+  push:
+    tags:
+      - "*"
+
+env:
+  PROJECT_NAME: swagger-ui-flat-model-plugin
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "lts/*"
+      - name: Install dependencies
+        run: |
+          npm install --frozen-lockfile
+      - name: Build module
+        run: |
+          npm run build
+
+      - name: Build
+        id: build
+        run: |
+          zip -r ${{ env.PROJECT_NAME }}.zip dir/*
+          echo "tag_name=$(git tag --sort version:refname | tail -n 1)" >> $GITHUB_OUTPUT
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            ./${{ env.PROJECT_NAME }}.zip
+            ./dist/*
+          tag_name: ${{ github.ref }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          fail_on_unmatched_files: true
