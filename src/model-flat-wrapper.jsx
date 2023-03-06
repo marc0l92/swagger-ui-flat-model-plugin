@@ -2,6 +2,7 @@ import React from "react"
 import ImmutablePureComponent from "react-immutable-pure-component"
 import ImPropTypes from "react-immutable-proptypes"
 import PropTypes from "prop-types"
+import { getModelName } from './utils'
 
 export default class ModelFlatWrapper extends ImmutablePureComponent {
   static propTypes = {
@@ -13,29 +14,10 @@ export default class ModelFlatWrapper extends ImmutablePureComponent {
     includeWriteOnly: PropTypes.bool,
   }
 
-  getModelName = (ref) => {
-    if (ref.indexOf("#/definitions/") !== -1) {
-      return ref.replace(/^.*#\/definitions\//, "")
-    }
-    if (ref.indexOf("#/components/schemas/") !== -1) {
-      return ref.replace(/^.*#\/components\/schemas\//, "")
-    }
-  }
-
-  getRefSchema = (model) => {
-    let { specSelectors } = this.props
-    return specSelectors.findDefinition(model)
-  }
-
   // TODO: allOf, anyOf, not, $ref
   getAllModels = (name, schema, options, models = {}) => {
     if (schema) {
-      if (!name && schema.has("$$ref")) {
-        name = this.getModelName(schema.get("$$ref"))
-      }
-      if (schema.has('title')) {
-        name = schema.get('title')
-      }
+      name = getModelName(schema) || name
 
       const type = schema.get('type') || 'object'
 
@@ -56,7 +38,7 @@ export default class ModelFlatWrapper extends ImmutablePureComponent {
         if (additionalProperties) {
           this.getAllModels('<*>', additionalProperties, options, models) // TODO: there should be no models with <*> name
         }
-      } else if (type === 'array' && schema.has('items')) {
+      } else if (type === 'array' && schema.get('items')) {
         this.getAllModels(name, schema.get('items'), options, models)
       }
     }

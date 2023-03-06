@@ -1,10 +1,10 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
-import { getExtensions, sanitizeUrl } from "./utils"
+import { getExtensions, getModelName, sanitizeUrl } from "./utils"
 
 const propClass = "property primitive"
 
-export default class Primitive extends Component {
+export default class ModelFlatProperty extends Component {
     static propTypes = {
         schema: PropTypes.object.isRequired,
         getComponent: PropTypes.func.isRequired,
@@ -17,6 +17,7 @@ export default class Primitive extends Component {
 
     render() {
         let { getComponent, getConfigs, schema, name } = this.props
+        console.log(name, schema.toJS())
 
         const { showExtensions } = getConfigs()
 
@@ -29,7 +30,7 @@ export default class Primitive extends Component {
         let format = schema.get("format")
         let xml = schema.get("xml")
         let enumArray = schema.get("enum")
-        let title = schema.get("title") || name
+        // let title = schema.get("title") || name
         let description = schema.get("description")
         let extensions = getExtensions(schema)
         let properties = schema
@@ -42,17 +43,56 @@ export default class Primitive extends Component {
         const Property = getComponent("Property")
         const Link = getComponent("Link")
 
+        let innerItem = null
+        let showProperties = false
+        if (type === 'object') {
+            innerItem = {
+                name: getModelName(schema),
+            }
+        } else if (type === 'array') {
+            if (schema.get('items')) {
+                const itemsType = schema.get('items').get('type')
+                if (itemsType === 'object') {
+                    innerItem = {
+                        name: getModelName(schema.get('items')),
+                        schema: schema.get('items'),
+                    }
+                } else {
+                    innerItem = {
+                        name: itemsType,
+                        schema: schema.get('items'),
+                    }
+                }
+            } else {
+                innerItem = { name: '' }
+            }
+            showProperties = true
+        } else {
+            showProperties = true
+        }
+
         return <span className="model">
             <span className="prop">
+                <span className="prop-type">
+                    {
+                        type !== 'object' ? null : innerItem.name
+                    }
+                    {
+                        type !== 'array' ? null : <>
+                            Array[{innerItem.name}]
+                            <ModelFlatProperty
+                                getComponent={getComponent}
+                                getConfigs={getConfigs}
+                                schema={innerItem.schema}
+                                name={innerItem.name} />
+                        </>
+                    }
+                    {
+                        !(type !== 'object' && type !== 'array') ? null : type
+                    }
+                </span>
                 {
-                    type !== 'object' ? null : <span>object</span>
-                }
-                {
-                    type !== 'array' ? null : <span>Array[item]</span>
-                }
-                {
-                    !(type !== 'object' && type !== 'array') ? null : <>
-                        <span className="prop-type">{type}</span>
+                    !showProperties ? null : <>
                         {format && <span className="prop-format">(${format})</span>}
                         {
                             properties.size ? properties.entrySeq().map(([key, v]) => <Property key={`${key}-${v}`} propKey={key} propVal={v} propClass={propClass} />) : null
