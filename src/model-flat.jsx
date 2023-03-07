@@ -52,7 +52,7 @@ export default class ModelFlat extends ImmutablePureComponent {
                 collapsedContent={collapsedContent}>
                 <span className="brace-open object">{braceOpen}</span>
                 <div className="inner-object">
-                    <table className="model table is-hoverable">
+                    <table className="model hoverable-table">
                         <tbody>
                             {
                                 !description ? null : <tr className="description">

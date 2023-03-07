@@ -25,7 +25,7 @@
     content: "|";
 }
 
-.swagger-ui .table.is-hoverable tbody tr:not(.is-selected):hover {
+.swagger-ui .hoverable-table tbody tr:not(.is-selected):hover {
     background-color: rgba(255, 255, 255, .3);
 }
 
