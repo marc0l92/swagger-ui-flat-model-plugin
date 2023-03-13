@@ -43,7 +43,7 @@ dist/swagger-ui-flat-model-plugin.js
 
 ```html
 <link rel="stylesheet" href="./css/swagger-ui-flat-model-plugin.css" />
-<script src="./js/swagger-ui-flat-model-plugin.js"></script>
+<script type="module" src="./js/swagger-ui-flat-model-plugin.js"></script>
 ```
 
 - Initialize the swagger ui using this plugin
