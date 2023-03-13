@@ -8,7 +8,29 @@ Plugin for [swagger-ui](https://github.com/swagger-api/swagger-ui) to add an add
 
 ![Preview](./docs/preview1.png)
 
-## How to install it
+## How to use it
+
+## From npm
+
+- Install the dependency
+
+```sh
+npm install swagger-ui-flat-model-plugin
+```
+
+- Use it in the SwaggerUI object initialization
+
+```ts
+import { SwaggerUiFlatModelPlugin } from 'swagger-ui-flat-model-plugin';
+
+SwaggerUI({
+    url: './data/openapi.json',
+    dom_id: '#swagger-ui',
+    plugins: [SwaggerUiFlatModelPlugin],
+});
+```
+
+### From source
 
 - Download the files in the `dist` folder:
 
