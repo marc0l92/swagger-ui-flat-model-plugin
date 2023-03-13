@@ -1,6 +1,6 @@
 {
   "name": "swagger-ui-flat-model-plugin",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "Plugin for swagger-ui to render models like swagger-ui-2",
   "repository": {
     "url": "https://github.com/marc0l92/swagger-ui-flat-model-plugin"
