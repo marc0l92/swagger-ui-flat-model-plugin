@@ -1,6 +1,6 @@
 {
   "name": "swagger-ui-flat-model-plugin",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Plugin for swagger-ui to render models like swagger-ui-2",
   "repository": {
     "url": "https://github.com/marc0l92/swagger-ui-flat-model-plugin"
@@ -8,7 +8,8 @@
   "main": "./dist/swaggerUiFlatModelPlugin.js",
   "scripts": {
     "dev": "node esbuild.config.mjs",
-    "build": "node esbuild.config.mjs production"
+    "build": "node esbuild.config.mjs production",
+    "build-types": "tsc"
   },
   "keywords": [
     "plugin",

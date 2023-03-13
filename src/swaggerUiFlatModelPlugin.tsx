@@ -4,7 +4,7 @@ import ModelFlatWrapper from './model-flat-wrapper'
 import ModelFlat from './model-flat'
 import ModelFlatProperty from './model-flat-property'
 
-const swaggerUiFlatModelPlugin: SwaggerUIPlugin = (system: any) => {
+export const swaggerUiFlatModelPlugin: SwaggerUIPlugin = (system: any) => {
   return {
     components: {
       // Override of native component modelExample

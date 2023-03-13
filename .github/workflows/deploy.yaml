@@ -19,6 +19,10 @@ jobs:
       - name: Build module
         run: |
           npm run build
+      - name: Build types
+        id: build-types
+        run: |
+          npm run build-types
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:

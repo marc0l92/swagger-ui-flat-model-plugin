@@ -22,3 +22,7 @@ jobs:
         id: build
         run: |
           npm run build
+      - name: Build types
+        id: build-types
+        run: |
+          npm run build-types
