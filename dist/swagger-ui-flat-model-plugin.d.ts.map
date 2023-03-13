@@ -1,1 +1,1 @@
-{"version":3,"file":"swagger-ui-flat-model-plugin.d.ts","sourceRoot":"","sources":["../src/swaggerUiFlatModelPlugin.tsx"],"names":[],"mappings":";;IAAA,OAAO,KAAK,EAAE,eAAe,EAAE,MAAM,YAAY,CAAA;IAMjD,MAAM,CAAC,MAAM,wBAAwB,EAAE,eAWtC,CAAA"}
+{"version":3,"file":"swagger-ui-flat-model-plugin.d.ts","sourceRoot":"","sources":["../src/swagger-ui-flat-model-plugin.tsx"],"names":[],"mappings":";;IAAA,OAAO,KAAK,EAAE,eAAe,EAAE,MAAM,YAAY,CAAA;IAMjD,MAAM,CAAC,MAAM,wBAAwB,EAAE,eAWtC,CAAA"}

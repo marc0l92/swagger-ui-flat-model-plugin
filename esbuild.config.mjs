@@ -14,7 +14,7 @@ const distOptions = {
         js: '// Project: https://github.com/marc0l92/swagger-ui-flat-model-plugin',
     },
     entryPoints: [{
-        in: './src/swaggerUiFlatModelPlugin.tsx',
+        in: './src/swagger-ui-flat-model-plugin.tsx',
         out: 'swagger-ui-flat-model-plugin',
     }],
     bundle: true,
