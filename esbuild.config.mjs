@@ -13,9 +13,10 @@ const distOptions = {
     banner: {
         js: '// Project: https://github.com/marc0l92/swagger-ui-flat-model-plugin',
     },
-    entryPoints: [
-        './src/swaggerUiFlatModelPlugin.tsx',
-    ],
+    entryPoints: [{
+        in: './src/swaggerUiFlatModelPlugin.tsx',
+        out: 'swagger-ui-flat-model-plugin',
+    }],
     bundle: true,
     mainFields: ["browser", "module", "main"],
     format: 'esm',
@@ -44,7 +45,7 @@ const testOptions = Object.assign({}, distOptions, {
     minify: false,
 })
 
-fs.copyFileSync('./dist/swaggerUiFlatModelPlugin.css', './test/css/swaggerUiFlatModelPlugin.css')
+fs.copyFileSync('./dist/swagger-ui-flat-model-plugin.css', './test/css/swagger-ui-flat-model-plugin.css')
 fs.copyFileSync('./node_modules/swagger-ui-dist/swagger-ui.css', './test/css/swagger-ui.css')
 fs.copyFileSync('./node_modules/swagger-ui-dist/swagger-ui.css.map', './test/css/swagger-ui.css.map')
 fs.copyFileSync('./node_modules/swagger-ui-dist/swagger-ui-bundle.js', './test/js/swagger-ui-bundle.js')

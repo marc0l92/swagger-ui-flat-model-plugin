@@ -13,15 +13,15 @@ Plugin for [swagger-ui](https://github.com/swagger-api/swagger-ui) to add an add
 - Download the files in the `dist` folder:
 
 ```
-dist/swaggerUiFlatModelPlugin.css
-dist/swaggerUiFlatModelPlugin.js
+dist/swagger-ui-flat-model-plugin.css
+dist/swagger-ui-flat-model-plugin.js
 ```
 
 - Include them in your website:
 
 ```html
-<link rel="stylesheet" href="./css/swaggerUiFlatModelPlugin.css" />
-<script src="./js/swaggerUiFlatModelPlugin.js"></script>
+<link rel="stylesheet" href="./css/swagger-ui-flat-model-plugin.css" />
+<script src="./js/swagger-ui-flat-model-plugin.js"></script>
 ```
 
 - Initialize the swagger ui using this plugin
