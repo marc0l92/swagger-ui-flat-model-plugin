@@ -19,14 +19,14 @@ jobs:
           node-version: "lts/*"
       - name: Install dependencies
         run: |
-          npm install --frozen-lockfile
+          yarn install --frozen-lockfile
       - name: Build module
         run: |
-          npm run build
+          yarn run build
       - name: Build types
         id: build-types
         run: |
-          npm run build-types
+          yarn run build-types
 
       - name: Build
         id: build

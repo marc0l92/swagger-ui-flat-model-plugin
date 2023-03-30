@@ -17,12 +17,12 @@ jobs:
       - name: Install dependencies
         id: install
         run: |
-          npm install --frozen-lockfile
+          yarn install --frozen-lockfile
       - name: Build
         id: build
         run: |
-          npm run build
+          yarn run build
       - name: Build types
         id: build-types
         run: |
-          npm run build-types
+          yarn run build-types
