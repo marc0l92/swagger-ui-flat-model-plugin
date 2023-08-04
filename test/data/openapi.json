@@ -1036,7 +1036,8 @@
                     },
                     "name": {
                         "type": "string",
-                        "example": "Dogs"
+                        "example": "Dogs",
+                        "nullable": true
                     }
                 },
                 "xml": {

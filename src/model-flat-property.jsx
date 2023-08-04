@@ -30,7 +30,7 @@ export default class ModelFlatProperty extends Component {
             if (type !== 'object' && properties.size) {
                 return <span className="properties-list">({
                     properties.entrySeq().map(([key, v]) =>
-                        <span key={`${key}-${v}`} className={propClass} >{key}: {v}</span>
+                        <span key={`${key}-${v}`} className={propClass} >{key}: {v.toString()}</span>
                     )
                 })</span>
             }
