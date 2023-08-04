@@ -56,4 +56,5 @@ if (prod) {
 } else {
     const webCtxTest = await esbuild.context(testOptions)
     webCtxTest.watch().catch(() => process.exit(1))
+    webCtxTest.serve({ servedir: 'test', port: 9000 }).catch(() => process.exit(1))
 }

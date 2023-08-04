@@ -8,15 +8,33 @@ dependencies:
   '@braintree/sanitize-url':
     specifier: ^6.0.2
     version: 6.0.2
+  classnames:
+    specifier: ^2.3.2
+    version: 2.3.2
+  immutable:
+    specifier: ^4.3.2
+    version: 4.3.2
   object-hash:
     specifier: ^3.0.0
     version: 3.0.0
+  prop-types:
+    specifier: ^15.8.1
+    version: 15.8.1
+  randombytes:
+    specifier: ^2.1.0
+    version: 2.1.0
   react:
     specifier: '=17.0.2'
     version: 17.0.2
   react-dom:
     specifier: '=17.0.2'
     version: 17.0.2(react@17.0.2)
+  react-immutable-proptypes:
+    specifier: ^2.2.0
+    version: 2.2.0(immutable@4.3.2)
+  react-immutable-pure-component:
+    specifier: ^2.2.2
+    version: 2.2.2(immutable@4.3.2)(react-dom@17.0.2)(react@17.0.2)
   swagger-ui:
     specifier: ^4.18.2
     version: 4.18.2
@@ -334,6 +352,7 @@ packages:
 
   /@swagger-api/apidom-ns-json-schema-draft-4@0.74.1:
     resolution: {integrity: sha512-zUQvrxoRQpvdYymHko1nxNeVWwqdGDYNYWUFW/EGZbP0sigKmuSZkh6LdseB9Pxt1WQD/6MkW3zN4JMXt/qFUA==}
+    requiresBuild: true
     dependencies:
       '@babel/runtime-corejs3': 7.22.6
       '@swagger-api/apidom-ast': 0.74.1
@@ -1111,6 +1130,10 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: false
 
+  /immutable@4.3.2:
+    resolution: {integrity: sha512-oGXzbEDem9OOpDWZu88jGiYCvIsLHMvGw+8OXlpsvTFvIQplQbjg1B1cvKg8f7Hoch6+NGjpPsH1Fr+Mc2D1aA==}
+    dev: false
+
   /inflight@1.0.6:
     resolution: {integrity: sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==}
     dependencies:
@@ -1594,6 +1617,15 @@ packages:
       invariant: 2.2.4
     dev: false
 
+  /react-immutable-proptypes@2.2.0(immutable@4.3.2):
+    resolution: {integrity: sha512-Vf4gBsePlwdGvSZoLSBfd4HAP93HDauMY4fDjXhreg/vg6F3Fj/MXDNyTbltPC/xZKmZc+cjLu3598DdYK6sgQ==}
+    peerDependencies:
+      immutable: '>=3.6.2'
+    dependencies:
+      immutable: 4.3.2
+      invariant: 2.2.4
+    dev: false
+
   /react-immutable-pure-component@2.2.2(immutable@3.8.2)(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-vkgoMJUDqHZfXXnjVlG3keCxSO/U6WeDQ5/Sl0GK2cH8TOxEzQ5jXqDXHEL/jqk6fsNxV05oH5kD7VNMUE2k+A==}
     peerDependencies:
@@ -1602,6 +1634,18 @@ packages:
       react-dom: '>= 16.6'
     dependencies:
       immutable: 3.8.2
+      react: 17.0.2
+      react-dom: 17.0.2(react@17.0.2)
+    dev: false
+
+  /react-immutable-pure-component@2.2.2(immutable@4.3.2)(react-dom@17.0.2)(react@17.0.2):
+    resolution: {integrity: sha512-vkgoMJUDqHZfXXnjVlG3keCxSO/U6WeDQ5/Sl0GK2cH8TOxEzQ5jXqDXHEL/jqk6fsNxV05oH5kD7VNMUE2k+A==}
+    peerDependencies:
+      immutable: '>= 2 || >= 4.0.0-rc'
+      react: '>= 16.6'
+      react-dom: '>= 16.6'
+    dependencies:
+      immutable: 4.3.2
       react: 17.0.2
       react-dom: 17.0.2(react@17.0.2)
     dev: false
