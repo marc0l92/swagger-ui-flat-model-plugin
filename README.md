@@ -71,4 +71,8 @@ Before pushing the changes build the project to create a production type bundle
 pnpm build
 ```
 
-To create a new release tag and push the commit, then publish on `npm.js`.
+### How to create a new release
+- Increase the version in the `package.json` file
+- Commit the and tag this new version
+- Push the commit and the tags
+- Publish on npmjs.com
