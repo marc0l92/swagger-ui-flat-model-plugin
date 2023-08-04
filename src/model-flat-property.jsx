@@ -39,7 +39,7 @@ export default class ModelFlatProperty extends Component {
     }
 
     renderTypeAndProperties(schema, namespace) {
-        const type = schema.get("type")
+        const type = schema.get("type") || 'object'
         if (type === 'object') {
             const name = getModelName(schema, namespace)
             return <span className="prop-type">
@@ -51,7 +51,7 @@ export default class ModelFlatProperty extends Component {
             </span>
         } else {
             return <span className="prop-type">
-                {type || 'object'}{this.renderProperties(schema)}
+                {type}{this.renderProperties(schema)}
             </span>
         }
     }
