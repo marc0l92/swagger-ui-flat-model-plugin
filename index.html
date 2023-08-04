@@ -20,6 +20,8 @@
                 dom_id: '#swagger-ui',
                 plugins: [swaggerUiFlatModelPlugin],
             });
+
+            new EventSource('/esbuild').addEventListener('change', () => location.reload())
         };
     </script>
 </body>
