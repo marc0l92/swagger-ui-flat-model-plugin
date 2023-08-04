@@ -10,7 +10,7 @@ Plugin for [swagger-ui](https://github.com/swagger-api/swagger-ui) to add an add
 
 ## How to use it
 
-## From npm
+### From npm
 
 - Install the dependency
 
@@ -57,3 +57,18 @@ SwaggerUIBundle({
 ```
 
 See the [example in the test folder](https://github.com/marc0l92/swagger-ui-flat-model-plugin/blob/master/test/index.html) for more details.
+
+## How to contribute
+
+Use `pnpm` to install the dependencies and start the example project:
+```sh
+pnpm install
+pnpm dev
+```
+
+Before pushing the changes build the project to create a production type bundle
+```sh
+pnpm build
+```
+
+To create a new release tag and push the commit, then publish on `npm.js`.
