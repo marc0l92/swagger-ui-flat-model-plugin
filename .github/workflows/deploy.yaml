@@ -13,16 +13,20 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: "lts/*"
+      - uses: pnpm/action-setup@v2
+        with:
+          version: latest
+          run_install: false
       - name: Install dependencies
         run: |
-          yarn install --frozen-lockfile
+          pnpm install --frozen-lockfile
       - name: Build module
         run: |
-          yarn run build
+          pnpm run build
       - name: Build types
         id: build-types
         run: |
-          yarn run build-types
+          pnpm run build-types
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
